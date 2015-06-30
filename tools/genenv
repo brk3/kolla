@@ -30,8 +30,9 @@ check_binarydependencies
 REAL_PATH=$(python -c "import os,sys;print os.path.realpath('$0')")
 cd "$(dirname "$REAL_PATH")/.."
 
-MY_IP=$(ip route get $(ip route | awk '$1 == "default" {print $3}') |
-    awk '$4 == "src" {print $5}')
+#MY_IP=$(ip route get $(ip route | awk '$1 == "default" {print $3}') |
+    #awk '$4 == "src" {print $5}')
+MY_IP=192.168.0.50
 
 MY_DEV=$(ip route get $(ip route | awk '$1 == "default" {print $3}') |
     awk '$4 == "src" {print $3}')
@@ -242,6 +243,80 @@ KEYSTONE_AUTH_PROTOCOL=http
 BARBICAN_KEYSTONE_USER=barbican
 ADMIN_TENANT_NAME=admin
 
+# Swift
+SWIFT_API_SERVICE_HOST=$HOST_IP
+SWIFT_OBJECT_RING_CONF=$(cat << EOF
+{
+  "ring_config": {
+    "name": "/etc/swift/object.builder",
+    "part_power": 10,
+    "replicas": 3,
+    "min_part_hours": 1
+  },
+  "hosts": [
+    {
+      "ip": "$HOST_IP:6000",
+      "device": "sdb1",
+      "weight": "1"
+    },
+    {
+      "ip": "$HOST_IP:6000",
+      "device": "sdb2",
+      "weight": "1"
+    }
+  ]
+}
+EOF
+)
+
+SWIFT_CONTAINER_RING_CONF=$(cat << EOF
+{
+  "ring_config": {
+    "name": "/etc/swift/container.builder",
+    "part_power": 10,
+    "replicas": 3,
+    "min_part_hours": 1
+  },
+  "hosts": [
+    {
+      "ip": "$HOST_IP:6001",
+      "device": "sdb1",
+      "weight": "1"
+    },
+    {
+      "ip": "$HOST_IP:6001",
+      "device": "sdb2",
+      "weight": "1"
+    }
+  ]
+}
+EOF
+)
+
+SWIFT_ACCOUNT_RING_CONF=$(cat << EOF
+{
+  "ring_config": {
+    "name": "/etc/swift/account.builder",
+    "part_power": 10,
+    "replicas": 3,
+    "min_part_hours": 1
+  },
+  "hosts": [
+    {
+      "ip": "$HOST_IP:6002",
+      "device": "sdb1",
+      "weight": "1"
+    },
+    {
+      "ip": "$HOST_IP:6002",
+      "device": "sdb2",
+      "weight": "1"
+    }
+  ]
+}
+EOF
+)
+
 # this should use the keystone admin port
 # https://bugs.launchpad.net/kolla/+bug/1469209
 cat > ./openrc <<EOF
@@ -412,6 +487,11 @@ BARBICAN_DB_NAME=$BARBICAN_DB_NAME
 KEYSTONE_AUTH_PROTOCOL=$KEYSTONE_AUTH_PROTOCOL
 BARBICAN_KEYSTONE_USER=$BARBICAN_KEYSTONE_USER
 ADMIN_TENANT_NAME=$ADMIN_TENANT_NAME
+OBJECT_RING_CONF=$OBJECT_RING_CONF
+SWIFT_API_SERVICE_HOST=$SWIFT_API_SERVICE_HOST
+SWIFT_OBJECT_RING_CONF=$(echo $SWIFT_OBJECT_RING_CONF | sed 's/\n//g')
+SWIFT_CONTAINER_RING_CONF=$(echo $SWIFT_CONTAINER_RING_CONF | sed 's/\n//g')
+SWIFT_ACCOUNT_RING_CONF=$(echo $SWIFT_ACCOUNT_RING_CONF | sed 's/\n//g')
 
 EOF
 echo Please customize your FLAT_INTERFACE to a different network then your

@@ -2,8 +2,9 @@ FROM %%KOLLA_NAMESPACE%%/%%KOLLA_PREFIX%%swift-base:%%KOLLA_TAG%%
 MAINTAINER Kolla Project (https://launchpad.net/kolla)
 
 RUN yum -y install \
-        openstack-swift-proxy.noarch \
+        openstack-swift-account.noarch \
     && yum clean all
 
 COPY start.sh /
+
 CMD ["/start.sh"]
