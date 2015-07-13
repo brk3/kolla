@@ -11,4 +11,6 @@ docker/centos/binary/swift/swift-object-updater/build --release && \
 docker/centos/binary/swift/swift-account-server/build --release && \
 docker/centos/binary/swift/swift-proxy-server/build --release && \
 docker/centos/binary/memcached/build --release && \
-docker/centos/binary/swift/swift-container-server/build --release
+docker/centos/binary/swift/swift-container-server/build --release && \
+docker-compose -f compose/swift-storage.yml up -d && \
+docker-compose -f compose/swift-proxy.yml up -d

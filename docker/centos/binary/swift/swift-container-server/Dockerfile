@@ -1,4 +1,4 @@
-FROM %%KOLLA_NAMESPACE%%/%%KOLLA_PREFIX%%swift-object-base:%%KOLLA_TAG%%
+FROM %%KOLLA_NAMESPACE%%/%%KOLLA_PREFIX%%swift-base:%%KOLLA_TAG%%
 MAINTAINER Kolla Project (https://launchpad.net/kolla)
 
 RUN yum -y install \
@@ -6,4 +6,6 @@ RUN yum -y install \
     && yum clean all
 
 COPY start.sh /
+COPY config-internal.sh config-external.sh /opt/kolla/
+
 CMD ["/start.sh"]
