@@ -1,1 +1,1 @@
-/home/vagrant/kolla/docker/common/swift/swift-account-server/start.sh
+../../../../../docker/common/swift/swift-account-server/start.sh

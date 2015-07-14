@@ -1,1 +1,1 @@
-/home/vagrant/kolla/docker/common/swift/swift-object-expirer/start.sh
+../../../../../docker/common/swift/swift-object-expirer/start.sh
