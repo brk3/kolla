@@ -30,9 +30,9 @@ check_binarydependencies
 REAL_PATH=$(python -c "import os,sys;print os.path.realpath('$0')")
 cd "$(dirname "$REAL_PATH")/.."
 
-#MY_IP=$(ip route get $(ip route | awk '$1 == "default" {print $3}') |
-    #awk '$4 == "src" {print $5}')
-MY_IP=192.168.0.50
+MY_IP=$(ip route get $(ip route | awk '$1 == "default" {print $3}') |
+    awk '$4 == "src" {print $5}')
+#MY_IP=192.168.0.50
 
 MY_DEV=$(ip route get $(ip route | awk '$1 == "default" {print $3}') |
     awk '$4 == "src" {print $3}')
@@ -263,6 +263,11 @@ SWIFT_OBJECT_RING_CONF=$(cat << EOF
       "ip": "$HOST_IP:6000",
       "device": "sdb2",
       "weight": "1"
+    },
+    {
+      "ip": "$HOST_IP:6000",
+      "device": "sdb3",
+      "weight": "1"
     }
   ]
 }
@@ -287,6 +292,11 @@ SWIFT_CONTAINER_RING_CONF=$(cat << EOF
       "ip": "$HOST_IP:6001",
       "device": "sdb2",
       "weight": "1"
+    },
+    {
+      "ip": "$HOST_IP:6001",
+      "device": "sdb3",
+      "weight": "1"
     }
   ]
 }
@@ -310,6 +320,11 @@ SWIFT_ACCOUNT_RING_CONF=$(cat << EOF
     {
       "ip": "$HOST_IP:6002",
       "device": "sdb2",
+      "weight": "1"
+    },
+    {
+      "ip": "$HOST_IP:6002",
+      "device": "sdb3",
       "weight": "1"
     }
   ]
