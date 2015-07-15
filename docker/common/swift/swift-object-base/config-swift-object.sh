@@ -27,6 +27,9 @@ crudini --set $cfg DEFAULT mount_check "${MOUNT_CHECK}"
 # [pipeline:main]
 crudini --set $cfg pipeline:main pipeline "${PIPELINE}"
 
+# [object-expirer] 
+crudini --set $cfg object-expirer
+
 # Create swift user and group if they don't exist
 id -u swift &>/dev/null || useradd --user-group swift
 
