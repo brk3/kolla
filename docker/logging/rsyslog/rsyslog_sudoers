@@ -1,0 +1,1 @@
+%kolla ALL=(root) NOPASSWD: /usr/bin/rm rsyslog\: -rf /dev/log, /usr/bin/chgrp rsyslog\: kolla /dev /var/log, /usr/bin/chmod rsyslog\: 775 /dev /var/log

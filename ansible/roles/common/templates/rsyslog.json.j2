@@ -1,5 +1,5 @@
 {
-    "command": "/usr/sbin/rsyslogd -n",
+    "command": "/usr/sbin/rsyslogd -n -i /home/rsyslog/.syslog.pid",
     "config_files": [
         {
             "source": "{{ container_config_directory }}/rsyslog.conf",

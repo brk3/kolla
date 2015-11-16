@@ -1,5 +1,8 @@
 #!/bin/bash
 
 if [[ -e "/dev/log" ]]; then
-    rm -rf /dev/log
+    sudo rm -rf /dev/log
 fi
+
+sudo chgrp kolla /dev /var/log
+sudo chmod 775 /dev /var/log
